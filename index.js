@@ -3,8 +3,8 @@ import morgan from "morgan";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import configDotenv from "dotenv";
-import userRouter from "./routers/users.js";
-import authRouter from "./routers/auth.js";
+import userRouter from "./src/routers/users.js";
+import authRouter from "./src/routers/auth.js";
 
 configDotenv.config();
 const app = express();

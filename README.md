@@ -18,5 +18,5 @@ DB_NAME=mydb
 ### 도커 실행
 
 ```
-추후 구현
+docker compose up
 ```
