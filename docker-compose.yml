@@ -1,0 +1,44 @@
+services:
+  server:
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - 3001:3001
+    build: .
+    environment:
+      - PORT=3001
+      - NODE_ENV=prod
+      - COOKIE_SECRET=secret
+      - DB_HOST=mysql
+      - DB_PORT=3308
+      - DB_USER=root
+      - DB_PASSWORD=1234
+      - DB_NAME=mydb
+  mysql:
+    image: mysql
+    ports:
+      - 3308:3306
+    environment:
+      - MYSQL_DATABASE=mydb
+      - MYSQL_ROOT_PASSWORD=1234
+      - TZ=Asia/Seoul
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./db/initdb.d:/docker-entrypoint-initdb.d
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p$$MYSQL_ROOT_PASSWORD",
+        ]
+      timeout: 10s
+      retries: 10
