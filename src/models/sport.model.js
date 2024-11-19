@@ -49,7 +49,7 @@ class Sport {
     }
 
     const sql = `
-      SELECT f.facility_id, p.program_type AS exercise, p.program_name, f.address, ${distance_sql} AS distance, p.time 
+      SELECT f.facility_id AS sport_id, p.program_type AS exercise, p.program_name, f.address, ${distance_sql} AS distance, p.time 
       FROM facility f LEFT JOIN program p ON f.facility_id = p.facility_id
       ${whereClause}
       ${havingClause}
@@ -57,8 +57,6 @@ class Sport {
       OFFSET ?
     `;
     params.push(itemsPerPage, offset);
-
-    console.log(sql, params);
 
     const [results, fields] = await pool.query(sql, params);
 
