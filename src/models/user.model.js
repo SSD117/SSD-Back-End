@@ -3,7 +3,7 @@ import pool from "../util/database.js";
 class User {
   static findUser = async (id) => {
     const [results, fields] = await pool.query(
-      "SELECT user_id, email, rating, name, age, gender, height, weight, school, balance FROM user WHERE user_id = ?;",
+      "SELECT user_id, email, rating, name, age, gender, height, weight, school, balance, latitude, longitude FROM user WHERE user_id = ?;",
       id
     );
     return results;

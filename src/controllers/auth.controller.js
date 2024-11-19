@@ -1,5 +1,5 @@
 import Auth from "../models/auth.model.js";
-import User from "../models/users.model.js";
+import User from "../models/user.model.js";
 import { makeHash, checkHash } from "../util/crypt.js";
 
 const login = async (req, res) => {

@@ -3,8 +3,9 @@ import morgan from "morgan";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import configDotenv from "dotenv";
-import userRouter from "./src/routers/users.js";
+import userRouter from "./src/routers/user.js";
 import authRouter from "./src/routers/auth.js";
+import sportRouer from "./src/routers/sport.js";
 
 configDotenv.config();
 const app = express();
@@ -29,7 +30,8 @@ app.use(
 );
 
 app.use("/auth", authRouter);
-app.use("/users", userRouter);
+app.use("/user", userRouter);
+app.use("/sport", sportRouer);
 
 app.use((err, req, res, next) => {
   console.error(err);
