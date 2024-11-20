@@ -91,7 +91,7 @@ class Sport {
     }
 
     const sql = `
-      SELECT f.facility_id AS sport_id, f.facility_name, f.facility_type, f.address, p.program_name, p.program_type as exercise, p.begin, p.end, p.day, p.time, p.recruit_cnt as recruit, p.price 
+      SELECT p.program_id AS class_id, f.facility_name, f.facility_type, f.address, p.program_name, p.program_type as exercise, p.begin, p.end, p.day, p.time, p.recruit_cnt as recruit, p.price 
       FROM facility f LEFT JOIN program p ON f.facility_id = p.facility_id 
       ${whereClause}
       LIMIT ?

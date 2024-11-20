@@ -6,6 +6,7 @@ import configDotenv from "dotenv";
 import userRouter from "./src/routers/user.js";
 import authRouter from "./src/routers/auth.js";
 import sportRouer from "./src/routers/sport.js";
+import classRouter from "./src/routers/class.js";
 
 configDotenv.config();
 const app = express();
@@ -32,6 +33,7 @@ app.use(
 app.use("/auth", authRouter);
 app.use("/user", userRouter);
 app.use("/sport", sportRouer);
+app.use("/class", classRouter);
 
 app.use((err, req, res, next) => {
   console.error(err);
