@@ -3,7 +3,7 @@ import pool from "../util/database.js";
 class User {
   static findUser = async (id) => {
     const [results, fields] = await pool.query(
-      "SELECT user_id, email, rating, name, age, gender, height, weight, school, balance, latitude, longitude FROM user WHERE user_id = ?;",
+      "SELECT user_id, email, rating, name, age, gender, height, weight, school, phone, balance, latitude, longitude FROM user WHERE user_id = ?;",
       id
     );
     return results;
@@ -11,7 +11,7 @@ class User {
 
   static insertUser = async (data) => {
     await pool.query(
-      "INSERT INTO user(email, password, rating, name, age, gender, height, weight, school, experience) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+      "INSERT INTO user(email, password, rating, name, age, gender, height, weight, school, phone, experience) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
       [
         data.email,
         data.password,
@@ -22,6 +22,7 @@ class User {
         data.height,
         data.weight,
         data.school,
+        data.phone,
         data.experience.toUpperCase() == "Y" ? 1 : 0,
       ]
     );
@@ -79,8 +80,8 @@ class User {
     ]);
   };
 
-  static deleteUser = async (id) => {
-    await pool.query("DELETE FROM user WHERE user_id = ?", values);
+  static deleteUser = async (user_id) => {
+    await pool.query("DELETE FROM user WHERE user_id = ?", user_id);
   };
 }
 
