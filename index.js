@@ -34,6 +34,9 @@ app.use("/auth", authRouter);
 app.use("/user", userRouter);
 app.use("/sport", sportRouer);
 app.use("/class", classRouter);
+app.get("/ping", (req, res) => {
+  return res.status(200).send("pong");
+});
 
 app.use((err, req, res, next) => {
   console.error(err);
