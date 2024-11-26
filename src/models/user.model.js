@@ -11,7 +11,7 @@ class User {
 
   static insertUser = async (data) => {
     await pool.query(
-      "INSERT INTO user(email, password, rating, name, age, gender, height, weight, school, phone, experience) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+      "INSERT INTO user(email, password, rating, name, age, gender, height, weight, school, latitude, longitude, phone, experience) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
       [
         data.email,
         data.password,
@@ -22,6 +22,8 @@ class User {
         data.height,
         data.weight,
         data.school,
+        data.latitude,
+        data.longitude,
         data.phone,
         data.experience.toUpperCase() == "Y" ? 1 : 0,
       ]
