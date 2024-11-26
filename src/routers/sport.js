@@ -1,5 +1,10 @@
 import express from "express";
-import { getSport, getSportDetail } from "../controllers/sport.controller.js";
+import {
+  getSport,
+  getSportDetail,
+  getAISurvey,
+  postAISurvey,
+} from "../controllers/sport.controller.js";
 
 const sportRouter = express.Router();
 
@@ -12,5 +17,9 @@ sportRouter.use((req, res, next) => {
 sportRouter.get("/", getSport);
 
 sportRouter.get("/detail/:sport_id", getSportDetail);
+
+sportRouter.get("/ai", getAISurvey);
+
+sportRouter.post("/ai", postAISurvey);
 
 export default sportRouter;

@@ -99,9 +99,52 @@ class Sport {
     `;
     params.push(itemsPerPage, offset);
 
-    const [results, fields] = await pool.query(sql, params);
+    const [results] = await pool.query(sql, params);
 
     return results;
+  };
+
+  static isExistRecommendSport = async (user_id) => {
+    const [[{ result }]] = await pool.query(
+      `SELECT CASE WHEN EXISTS ( SELECT 1 FROM exercise WHERE user_id = ? AND is_recommend = 1) THEN 'Y' ELSE 'N' END AS result;`,
+      user_id
+    );
+
+    if (result == "Y") return true;
+    else return false;
+  };
+
+  static findRecommendSport = async (user_id) => {
+    const [result] = await pool.query(
+      "SELECT exercise_name as exercise FROM exercise WHERE user_id = ? AND is_recommend = 1",
+      user_id
+    );
+    return result.map((e) => e.exercise);
+  };
+
+  static insertRecommendSport = async (user_id, exercies) => {
+    const params = [];
+    const clause = [];
+    let insertClause = "";
+
+    exercies.forEach((exercise) => {
+      params.push(...[user_id, exercise, 1]);
+      clause.push("(?, ?, ?)");
+    });
+
+    insertClause = clause.join(", ");
+
+    await pool.query(
+      `INSERT INTO exercise(user_id, exercise_name, is_recommend) values ${insertClause}`,
+      params
+    );
+  };
+
+  static deleteRecommendSport = async (user_id) => {
+    await pool.query(
+      `DELETE FROM exercise WHERE user_id = ? AND is_recommend = 1`,
+      user_id
+    );
   };
 }
 
