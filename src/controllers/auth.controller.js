@@ -1,8 +1,7 @@
-import axios from "axios";
 import Auth from "../models/auth.model.js";
 import User from "../models/user.model.js";
 import { makeHash, checkHash } from "../util/crypt.js";
-import configDotenv from "dotenv";
+import addressToGeocode from "../util/geocode.js";
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -39,24 +38,10 @@ const register = async (req, res) => {
   }
 
   let latitude, longitude;
-
   try {
-    const url = `https://maps.googleapis.com/maps/api/geocode/json`;
-    const response = await axios.get(url, {
-      params: {
-        address: req.body.school,
-        key: process.env.MAP_API_KEY,
-      },
-    });
-
-    const data = response.data;
-
-    if (data.status !== "OK") {
-      throw new Error("좌표 역변환 실패 ", data.status);
-    }
-    const { lat, lng } = data.results[0].geometry.location;
-    latitude = lat;
-    longitude = lng;
+    const data = await addressToGeocode(req.body.school);
+    latitude = data.latitude;
+    longitude = data.longitude;
   } catch (err) {
     console.log(`Google Map API 에러: ${err}`);
     return res.status(400).send(`Google Map API 에러: ${err}`);

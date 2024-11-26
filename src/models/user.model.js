@@ -67,6 +67,9 @@ class User {
         "school",
         "balance",
         "experience",
+        "latitude",
+        "longitude",
+        "phone",
       ];
 
     for (let c of columns) {
