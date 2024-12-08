@@ -14,7 +14,10 @@ const addressToGeocode = async (address) => {
     const data = response.data;
 
     if (data.status !== "OK") {
-      throw new Error("좌표 역변환 실패 ", data.status);
+      throw new Error(
+        "좌표 역변환 실패! 정확한 주소를 입력해 주세요",
+        data.status
+      );
     }
     const { lat, lng } = data.results[0].geometry.location;
     const latitude = lat;

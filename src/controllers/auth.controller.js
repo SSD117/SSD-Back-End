@@ -4,14 +4,16 @@ import { makeHash, checkHash } from "../util/crypt.js";
 import addressToGeocode from "../util/geocode.js";
 
 const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password } = req.query;
   const data = await Auth.login(email);
   if (data == null)
     return res.status(400).send({ message: "이메일이 존재하지 않습니다" });
 
   try {
-    const data = await Auth.login(email);
-    if (!checkHash(password, data.password)) throw new Error();
+    const isSame = await checkHash(password, data.password);
+    if (!isSame) {
+      return res.status(400).send({ message: "비밀번호가 틀렸습니다" });
+    }
     req.session.user_id = data.user_id;
   } catch (err) {
     return res.status(400).send({ message: `로그인 실패: ${err}` });
@@ -44,17 +46,20 @@ const register = async (req, res) => {
     longitude = data.longitude;
   } catch (err) {
     console.log(`Google Map API 에러: ${err}`);
-    return res.status(400).send(`Google Map API 에러: ${err}`);
+    return res.status(400).send({ message: `Google Map API 에러: ${err}` });
   }
+
+  if (latitude == null || longitude == null)
+    return res.status(400).send({
+      message: `${req.body.school} 대신 정확한 학교명을 작성해주세요`,
+    });
 
   try {
     await User.insertUser({ ...req.body, latitude, longitude });
   } catch (err) {
     console.log(`db 에러: ${err}`);
-    return res.status(500).send(`db 에러: ${err}`);
+    return res.status(500).send({ message: `db 에러: ${err}` });
   }
-
-  console.log({ ...req.body, latitude, longitude });
 
   return res.status(200).send({ message: "회원가입 성공" });
 };

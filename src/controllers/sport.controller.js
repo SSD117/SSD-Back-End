@@ -4,7 +4,7 @@ import configDotenv from "dotenv";
 
 const getSport = async (req, res) => {
   try {
-    const { page = 1, exercises, distance = 5, time } = req.body;
+    const { page = 1, exercises, distance = 5, time } = req.params;
     const results = await Sport.findSport(
       page,
       exercises,
@@ -21,7 +21,7 @@ const getSport = async (req, res) => {
 
 const getSportDetail = async (req, res) => {
   try {
-    const { page = 1, price, day } = req.body;
+    const { page = 1, price, day } = req.params;
     const results = await Sport.findSportById(
       req.params.sport_id,
       page,

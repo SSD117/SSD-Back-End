@@ -3,6 +3,7 @@ import morgan from "morgan";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import configDotenv from "dotenv";
+import cors from "cors";
 import userRouter from "./src/routers/user.js";
 import authRouter from "./src/routers/auth.js";
 import sportRouer from "./src/routers/sport.js";
@@ -17,6 +18,13 @@ else app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(
+  cors({
+    origin: process.env.FRONT_URL, // Allow this origin
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    credentials: true, // If you need to include cookies
+  })
+);
 app.use(
   session({
     resave: false,
