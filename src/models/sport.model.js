@@ -49,7 +49,7 @@ class Sport {
     }
 
     const sql = `
-      SELECT f.facility_id AS sport_id, p.program_type AS exercise, p.program_name, f.address, ${distance_sql} AS distance, p.time 
+      SELECT DISTINCT f.facility_id AS sport_id, p.program_type AS exercise, f.facility_name AS program_name, f.address, ${distance_sql} AS distance 
       FROM facility f LEFT JOIN program p ON f.facility_id = p.facility_id
       ${whereClause}
       ${havingClause}
