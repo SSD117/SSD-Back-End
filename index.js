@@ -18,32 +18,11 @@ else app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
-// app.use(
-//   cors({
-//     origin: process.env.FRONT_URL, // Allow this origin
-//     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-//     credentials: true, // If you need to include cookies
-//   })
-// );
-
-const allowedOrigins = [
-  "http://158.180.80.145:3000",
-  "http://localhost:3000",
-  "http://frontend:3000",
-];
-
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // 요청의 `origin`이 허용된 목록에 있는지 확인
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true); // 허용
-      } else {
-        callback(new Error("Not allowed by CORS")); // 차단
-      }
-    },
+    origin: process.env.FRONT_URL, // Allow this origin
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    credentials: true, // 쿠키 및 인증 정보 포함
+    credentials: true, // If you need to include cookies
   })
 );
 
