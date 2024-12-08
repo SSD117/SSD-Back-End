@@ -51,7 +51,8 @@ class Sport {
       params.push(latitude, longitude, latitude);
     }
 
-    params.push(...exercises, distance);
+    if (exercises) params.push(...exercises, distance);
+    else params.push(distance);
 
     const sql = `
       SELECT DISTINCT f.facility_id AS sport_id, p.program_type AS exercise, f.facility_name AS program_name, f.address, ${distance_sql} AS distance 
