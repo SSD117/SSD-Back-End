@@ -18,11 +18,14 @@ class Sport {
 
     // 운동 필터링
     if (exercises) {
+      if (!Array.isArray(exercises)) {
+        exercises = [exercises];
+      }
+
       const exerciseConditions = exercises
         .map(() => "p.program_type = ?")
         .join(" OR ");
       whereClause += ` AND ${exerciseConditions}`;
-      params.push(...exercises);
     }
 
     // 오전, 오후 필터링
@@ -45,8 +48,10 @@ class Sport {
         user_id
       );
       havingClause += " AND distance <= ?";
-      params.push(latitude, longitude, latitude, distance);
+      params.push(latitude, longitude, latitude);
     }
+
+    params.push(...exercises, distance);
 
     const sql = `
       SELECT DISTINCT f.facility_id AS sport_id, p.program_type AS exercise, f.facility_name AS program_name, f.address, ${distance_sql} AS distance 
@@ -85,6 +90,10 @@ class Sport {
 
     // 요일 필터링
     if (day) {
+      if (!Array.isArray(day)) {
+        day = [day];
+      }
+
       const dayConditions = day.map(() => "p.day LIKE ?").join(" OR ");
       whereClause += ` AND (${dayConditions})`;
       params.push(...day.map((d) => `%${d}%`));
