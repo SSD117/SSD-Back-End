@@ -3,7 +3,7 @@ import Class from "../models/class.model.js";
 const getClass = async (req, res) => {
   try {
     const results = await Class.findClass(req.session.user_id);
-    return res.status(200).send({ class_id: results.map((e) => e.class_id) });
+    return res.status(200).send(results);
   } catch (err) {
     console.log(err);
     return res.status(400).send(err);
@@ -37,7 +37,7 @@ const deleteClass = async (req, res) => {
 const getBookmark = async (req, res) => {
   try {
     const results = await Class.findBookmark(req.session.user_id);
-    return res.status(200).send({ class_id: results.map((e) => e.class_id) });
+    return res.status(200).send(results);
   } catch (err) {
     console.log(err);
     return res.status(400).send(err);

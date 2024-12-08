@@ -3,7 +3,7 @@ import pool from "../util/database.js";
 class Class {
   static findClass = async (user_id) => {
     const [results, fields] = await pool.query(
-      "SELECT program_id AS class_id FROM class WHERE user_id = ?",
+      "SELECT c.program_id AS class_id, p.program_name AS class_name FROM program p LEFT JOIN class c ON p.program_id = c.program_id WHERE user_id = ?",
       user_id
     );
     return results;
@@ -11,7 +11,7 @@ class Class {
 
   static findBookmark = async (user_id) => {
     const [results, fields] = await pool.query(
-      "SELECT program_id AS class_id FROM bookmark WHERE user_id = ?",
+      "SELECT b.program_id AS class_id, p.program_name AS class_name FROM program p LEFT JOIN bookmark b ON p.program_id = b.program_id WHERE user_id = ?",
       user_id
     );
     return results;
